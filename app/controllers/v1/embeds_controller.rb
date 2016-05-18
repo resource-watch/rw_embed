@@ -1,6 +1,7 @@
 module V1
   class EmbedsController < ApplicationController
-    before_action :set_embed, only: [:show, :update, :destroy]
+    before_action :basic_auth, only: [:update, :create, :destroy]
+    before_action :set_embed,  only: [:show, :update, :destroy]
 
     def index
       @embeds = Embed.fetch_all(embed_type_filter)
