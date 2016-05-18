@@ -1,5 +1,7 @@
 # Resource Watch Embed Service
 
+[![Build Status](https://travis-ci.org/resource-watch/rw_embed.svg?branch=master)](https://travis-ci.org/resource-watch/rw_embed) [![Code Climate](https://codeclimate.com/github/resource-watch/rw_embed/badges/gpa.svg)](https://codeclimate.com/github/resource-watch/rw_embed)
+
 TODO: Write a project description
 
 ## Installation
