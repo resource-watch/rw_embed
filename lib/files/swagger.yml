@@ -12,6 +12,67 @@ produces:
   - application/json
 
 paths:
+  /embeds:
+    get:
+      description: Returns all embeds
+      produces:
+        - application/json
+      tags:
+        - Embed
+      parameters:
+        - name: status
+          in: query
+          description: Filter embeds on status (pending, active, disabled, all)
+          type: string
+        - name: type
+          in: query
+          description: Filter embeds on type (app, image)
+          type: string
+      responses:
+        200:
+          description: Embeds obtained
+          schema:
+            $ref: '#/definitions/Embeds'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create application or image embed (depends on source_type - 0 for application or 1 for image)
+      description: Create embed
+      produces:
+        - application/json
+      tags:
+        - Embed
+      parameters:
+        - name: embed
+          in: body
+          description: Embed to save
+          required: true
+          schema:
+            $ref: '#/definitions/EmbedCreate'
+      responses:
+        200:
+          description: The object created
+          schema:
+            $ref: '#/definitions/Embed'
+        400:
+          description: Validate error
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
   /embeds/{id}:
     get:
       description: Returns embed based on a single UUID or slud, if the geostore not exist return 404
@@ -104,57 +165,6 @@ paths:
             $ref: '#/definitions/Error'
         default:
           description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /embeds:
-    get:
-      description: Returns all embeds
-      produces:
-        - application/json
-      tags:
-        - Embed
-      responses:
-        200:
-          description: Embeds obtained
-          schema:
-            $ref: '#/definitions/Embeds'
-        500:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      summary: Create application or image embed (depends on source_type - 0 for application or 1 for image)
-      description: Create embed
-      produces:
-        - application/json
-      tags:
-        - Embed
-      parameters:
-        - name: embed
-          in: body
-          description: Embed to save
-          required: true
-          schema:
-            $ref: '#/definitions/EmbedCreate'
-      responses:
-        200:
-          description: The object created
-          schema:
-            $ref: '#/definitions/Embed'
-        400:
-          description: Validate error
-          schema:
-            $ref: '#/definitions/Error'
-        500:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
 
