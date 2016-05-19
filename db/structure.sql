@@ -102,7 +102,8 @@ CREATE TABLE embeds (
     source_type integer DEFAULT 0,
     status integer DEFAULT 0,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    published boolean DEFAULT false
 );
 
 
@@ -175,11 +176,25 @@ CREATE UNIQUE INDEX index_embeds_on_source_and_embedable_type ON embeds USING bt
 
 
 --
+-- Name: index_embeds_on_source_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeds_on_source_type ON embeds USING btree (source_type);
+
+
+--
+-- Name: index_embeds_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeds_on_status ON embeds USING btree (status);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20160518112028'), ('20160518112054'), ('20160518114436'), ('20160518114831');
+INSERT INTO schema_migrations (version) VALUES ('20160518112028'), ('20160518112054'), ('20160518114436'), ('20160518114831'), ('20160519111712');
 
 

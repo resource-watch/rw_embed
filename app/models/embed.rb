@@ -17,7 +17,7 @@
 
 class Embed < ApplicationRecord
   SOURCE = %w(application image).freeze
-  STATUS = %w(pending saved failed verified deleted).freeze
+  STATUS = %w(pending saved failed deleted).freeze
 
   belongs_to :embedable, polymorphic: true
 
@@ -33,14 +33,17 @@ class Embed < ApplicationRecord
                                               message: 'invalid. Slug must contain at least one letter and no special character' }
   validates_uniqueness_of :title, :slug
 
-  scope :recent,           -> { order('updated_at DESC') }
-  scope :filter_pending,   -> { where(status: 0)         }
-  scope :filter_actives,   -> { where(status: 1)         }
-  scope :filter_verified,  -> { where(status: 2)         }
-  scope :filter_inactives, -> { where(status: 3)         }
+  scope :recent,             -> { order('updated_at DESC') }
+  scope :filter_pending,     -> { where(status: 0)         }
+  scope :filter_saved,       -> { where(status: 1)         }
+  scope :filter_failed,      -> { where(status: 2)         }
+  scope :filter_inactives,   -> { where(status: 3)         }
+  scope :filter_published,   -> { where(published: true)   }
+  scope :filter_unpublished, -> { where(published: false)  }
 
-  scope :filter_apps,   -> { where(embedable_type: 'EmbedApp').includes(:embedable) }
-  scope :filter_images, -> { where(embedable_type: 'Photo').includes(:embedable)    }
+  scope :filter_apps,    -> { where(embedable_type: 'EmbedApp') }
+  scope :filter_images,  -> { where(embedable_type: 'Photo')    }
+  scope :filter_actives, -> { filter_saved.filter_published     }
 
   def source_txt
     SOURCE[source_type - 0]
@@ -61,23 +64,27 @@ class Embed < ApplicationRecord
     end
 
     def fetch_all(options)
-      status     = options['status'] if options['status'].present?
-      embed_type = options['type']   if options['type'].present?
+      status     = options['status']    if options['status'].present?
+      embed_type = options['type']      if options['type'].present?
+      published  = options['published'] if options['published'].present?
 
       embeds = recent
 
       embeds = case status
                when 'pending'  then embeds.filter_pending
                when 'active'   then embeds.filter_actives
-               when 'verified' then embeds.filter_verified
+               when 'failed'   then embeds.filter_failed
                when 'disabled' then embeds.filter_inactives
                when 'all'      then embeds
                else
-                 embeds.filter_actives
+                 published.present? ? embeds : embeds.filter_actives
                end
 
-      embeds = embeds.filter_images if embed_type.present? && embed_type.include?('image')
-      embeds = embeds.filter_apps   if embed_type.present? && embed_type.include?('app')
+      embeds = embeds.filter_published   if published.present? && published.include?('true')
+      embeds = embeds.filter_unpublished if published.present? && published.include?('false')
+
+      embeds = embeds.filter_images      if embed_type.present? && embed_type.include?('image')
+      embeds = embeds.filter_apps        if embed_type.present? && embed_type.include?('app')
       embeds
     end
 

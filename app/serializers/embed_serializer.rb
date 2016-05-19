@@ -29,6 +29,7 @@ class EmbedSerializer < ActiveModel::Serializer
   def meta
     data = {}
     data['status']     = object.try(:status_txt)
+    data['published']  = object.try(:published)
     data['updated_at'] = object.try(:updated_at)
     data['created_at'] = object.try(:created_at)
     data
