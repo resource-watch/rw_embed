@@ -38,6 +38,11 @@ module V1
       end
     end
 
+    def docs
+      @docs = YAML.load(File.read('lib/files/swagger.yml')).to_json
+      render json: @docs
+    end
+
     private
 
       def set_embed
