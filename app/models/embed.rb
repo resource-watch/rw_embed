@@ -17,7 +17,7 @@
 
 class Embed < ApplicationRecord
   SOURCE = %w(application image).freeze
-  STATUS = %w(pending saved failed deleted).freeze
+  STATUS = %w(pending saved failed verified deleted).freeze
 
   belongs_to :embedable, polymorphic: true
 
@@ -36,7 +36,8 @@ class Embed < ApplicationRecord
   scope :recent,           -> { order('updated_at DESC') }
   scope :filter_pending,   -> { where(status: 0)         }
   scope :filter_actives,   -> { where(status: 1)         }
-  scope :filter_inactives, -> { where(status: 2)         }
+  scope :filter_verified,  -> { where(status: 2)         }
+  scope :filter_inactives, -> { where(status: 3)         }
 
   scope :filter_apps,   -> { where(embedable_type: 'EmbedApp').includes(:embedable) }
   scope :filter_images, -> { where(embedable_type: 'Photo').includes(:embedable)    }
@@ -68,6 +69,7 @@ class Embed < ApplicationRecord
       embeds = case status
                when 'pending'  then embeds.filter_pending
                when 'active'   then embeds.filter_actives
+               when 'verified' then embeds.filter_verified
                when 'disabled' then embeds.filter_inactives
                when 'all'      then embeds
                else

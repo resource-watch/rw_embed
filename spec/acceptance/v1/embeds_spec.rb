@@ -25,7 +25,7 @@ module V1
 
       context 'List filters' do
         let!(:disabled_embed) {
-          EmbedApp.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed app second', source_type: 0, slug: 'embed-app-second', status: 2 })
+          EmbedApp.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed app second', source_type: 0, slug: 'embed-app-second', status: 3 })
         }
 
         let!(:enabled_embed) {
