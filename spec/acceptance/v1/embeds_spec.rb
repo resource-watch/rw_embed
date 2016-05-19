@@ -25,25 +25,29 @@ module V1
 
       context 'List filters' do
         let!(:disabled_embed) {
-          EmbedApp.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed app second', source_type: 0, slug: 'embed-app-second', status: 3 })
+          EmbedApp.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed app second', source_type: 0, slug: 'embed-app-second', status: 3, published: false })
         }
 
         let!(:enabled_embed) {
-          Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo', source_type: 1, status: 1 })
+          Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo', source_type: 1, status: 1, published: true })
+        }
+
+        let!(:unpublished_embed) {
+          Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo unpublished', source_type: 1, status: 1, published: false })
         }
 
         it 'Show list of all embeds' do
           get '/embeds?status=all'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(3)
+          expect(json.size).to eq(4)
         end
 
         it 'Show list of all embeds of type image' do
           get '/embeds?status=all&type=image'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(2)
         end
 
         it 'Show list of all embeds of type app using status filter all' do
@@ -79,6 +83,22 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(1)
+        end
+
+        it 'Show list of embeds with published status true' do
+          get '/embeds?published=true'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(1)
+          expect(json[0]['published']).to eq(true)
+        end
+
+        it 'Show list of embeds with published status false' do
+          get '/embeds?published=false'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(3)
+          expect(json[0]['published']).to eq(false)
         end
 
         it 'Show list of embeds' do

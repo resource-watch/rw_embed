@@ -22,7 +22,11 @@ paths:
       parameters:
         - name: status
           in: query
-          description: Filter embeds on status (pending, active, disabled, all)
+          description: Filter embeds on status (pending, active, failed, disabled, all)
+          type: string
+        - name: published
+          in: query
+          description: Filter embeds on published status (true, false)
           type: string
         - name: type
           in: query
@@ -188,7 +192,10 @@ definitions:
               status:
                 type: integer
                 format: int32
-                description: Id of the status (0 - panding, 1 - saved, 2 - verified, 3 - disabled)
+                description: Id of the status (0 - panding, 1 - saved, 2 - failed, 3 - disabled)
+              published:
+                type: boolean
+                description: Published status (true - false)
               slug:
                 type: string
                 description: Slug (would be generated from title if empty)
@@ -227,6 +234,9 @@ definitions:
       status:
         type: string
         description: status
+      published:
+        type: boolean
+        description: Published status
 
   Embed:
     type: object
@@ -259,6 +269,9 @@ definitions:
           status:
             type: string
             description: Status
+          published:
+            type: boolean
+            description: Published status
           updated_at:
             type: string
             description: Date

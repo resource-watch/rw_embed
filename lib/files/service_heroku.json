@@ -63,6 +63,104 @@
         "application/json"
       ],
       "paths": {
+        "/embeds": {
+          "get": {
+            "description": "Returns all embeds",
+            "produces": [
+              "application/json"
+            ],
+            "tags": [
+              "Embed"
+            ],
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Filter embeds on status (pending, active, failed, disabled, all)",
+                "type": "string"
+              },
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter embeds on published status (true, false)",
+                "type": "string"
+              },
+              {
+                "name": "type",
+                "in": "query",
+                "description": "Filter embeds on type (app, image)",
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Embeds obtained",
+                "schema": {
+                  "$ref": "#/definitions/Embeds"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          },
+          "post": {
+            "summary": "Create application or image embed (depends on source_type - 0 for application or 1 for image)",
+            "description": "Create embed",
+            "produces": [
+              "application/json"
+            ],
+            "tags": [
+              "Embed"
+            ],
+            "parameters": [
+              {
+                "name": "embed",
+                "in": "body",
+                "description": "Embed to save",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/EmbedCreate"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "The object created",
+                "schema": {
+                  "$ref": "#/definitions/Embed"
+                }
+              },
+              "400": {
+                "description": "Validate error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        },
         "/embeds/{id}": {
           "get": {
             "description": "Returns embed based on a single UUID or slud, if the geostore not exist return 404",
@@ -205,84 +303,6 @@
               }
             }
           }
-        },
-        "/embeds": {
-          "get": {
-            "description": "Returns all embeds",
-            "produces": [
-              "application/json"
-            ],
-            "tags": [
-              "Embed"
-            ],
-            "responses": {
-              "200": {
-                "description": "Embeds obtained",
-                "schema": {
-                  "$ref": "#/definitions/Embeds"
-                }
-              },
-              "500": {
-                "description": "Unexpected error",
-                "schema": {
-                  "$ref": "#/definitions/Error"
-                }
-              },
-              "default": {
-                "description": "unexpected error",
-                "schema": {
-                  "$ref": "#/definitions/Error"
-                }
-              }
-            }
-          },
-          "post": {
-            "summary": "Create application or image embed (depends on source_type - 0 for application or 1 for image)",
-            "description": "Create embed",
-            "produces": [
-              "application/json"
-            ],
-            "tags": [
-              "Embed"
-            ],
-            "parameters": [
-              {
-                "name": "embed",
-                "in": "body",
-                "description": "Embed to save",
-                "required": true,
-                "schema": {
-                  "$ref": "#/definitions/EmbedCreate"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "The object created",
-                "schema": {
-                  "$ref": "#/definitions/Embed"
-                }
-              },
-              "400": {
-                "description": "Validate error",
-                "schema": {
-                  "$ref": "#/definitions/Error"
-                }
-              },
-              "500": {
-                "description": "Unexpected error",
-                "schema": {
-                  "$ref": "#/definitions/Error"
-                }
-              },
-              "default": {
-                "description": "Unexpected error",
-                "schema": {
-                  "$ref": "#/definitions/Error"
-                }
-              }
-            }
-          }
         }
       },
       "definitions": {
@@ -307,7 +327,11 @@
                     "status": {
                       "type": "integer",
                       "format": "int32",
-                      "description": "Id of the status (0 - panding, 1 - saved, 2 - failed, 3 - deleted)"
+                      "description": "Id of the status (0 - panding, 1 - saved, 2 - failed, 3 - disabled)"
+                    },
+                    "published": {
+                      "type": "boolean",
+                      "description": "Published status (true - false)"
                     },
                     "slug": {
                       "type": "string",
@@ -361,6 +385,10 @@
             "status": {
               "type": "string",
               "description": "status"
+            },
+            "published": {
+              "type": "boolean",
+              "description": "Published status"
             }
           }
         },
@@ -402,6 +430,10 @@
                 "status": {
                   "type": "string",
                   "description": "Status"
+                },
+                "published": {
+                  "type": "boolean",
+                  "description": "Published status"
                 },
                 "updated_at": {
                   "type": "string",

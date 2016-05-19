@@ -51,7 +51,7 @@ module V1
       end
 
       def embed_type_filter
-        params.permit(:status, :type)
+        params.permit(:status, :type, :published)
       end
 
       def embed_params
