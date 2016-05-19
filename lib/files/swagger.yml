@@ -188,7 +188,7 @@ definitions:
               status:
                 type: integer
                 format: int32
-                description: Id of the status (0 - panding, 1 - saved, 2 - failed, 3 - deleted)
+                description: Id of the status (0 - panding, 1 - saved, 2 - verified, 3 - disabled)
               slug:
                 type: string
                 description: Slug (would be generated from title if empty)

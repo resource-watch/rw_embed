@@ -8,7 +8,7 @@ class CreateEmbeds < ActiveRecord::Migration[5.0]
       t.text    :summary
       t.text    :content
       t.integer :source_type,        default: 0
-      t.integer :status,             default: 0       # status(in process - 0, saved - 1, failed - 2)
+      t.integer :status,             default: 0       # status(in process - 0, saved - 1verified - 2, failed - 3)
 
       t.timestamps
     end
