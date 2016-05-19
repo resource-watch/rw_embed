@@ -41,10 +41,9 @@ class Embed < ApplicationRecord
   scope :filter_published,   -> { where(published: true)   }
   scope :filter_unpublished, -> { where(published: false)  }
 
-  scope :filter_actives,   -> { filter_saved.filter_published }
-
-  scope :filter_apps,   -> { where(embedable_type: 'EmbedApp').includes(:embedable) }
-  scope :filter_images, -> { where(embedable_type: 'Photo').includes(:embedable)    }
+  scope :filter_apps,    -> { where(embedable_type: 'EmbedApp') }
+  scope :filter_images,  -> { where(embedable_type: 'Photo')    }
+  scope :filter_actives, -> { filter_saved.filter_published     }
 
   def source_txt
     SOURCE[source_type - 0]
