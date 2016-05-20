@@ -50,6 +50,9 @@ GEM
     bcrypt (3.1.11)
     brakeman (3.3.0)
     builder (3.2.2)
+    bullet (5.0.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.9.0)
     byebug (9.0.3)
     codeclimate-test-reporter (0.5.0)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -206,6 +209,7 @@ GEM
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unicode-display_width (1.0.5)
+    uniform_notifier (1.9.0)
     websocket-driver (0.6.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -218,6 +222,7 @@ DEPENDENCIES
   annotate
   bcrypt
   brakeman
+  bullet
   byebug
   codeclimate-test-reporter
   database_cleaner
