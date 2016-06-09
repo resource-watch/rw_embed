@@ -12,6 +12,24 @@
         }]
       },
       {
+        "url": "/sources",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "https://rw-embed.herokuapp.com",
+            "path": "/sources"
+        }]
+      },
+      {
+        "url": "/partners",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "https://rw-embed.herokuapp.com",
+            "path": "/partners"
+        }]
+      },
+      {
         "url": "/embeds/:id",
         "method": "GET",
         "endpoints": [{
