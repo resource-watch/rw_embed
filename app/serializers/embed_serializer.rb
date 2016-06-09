@@ -17,7 +17,7 @@
 #
 
 class EmbedSerializer < ActiveModel::Serializer
-  attributes :id, :slug, :source_type, :source_url, :title, :summary, :content, :source, :meta
+  attributes :id, :slug, :source_type, :source_url, :thumbnail_url, :title, :summary, :content, :source, :meta
 
   def source_type
     object.try(:source_txt)

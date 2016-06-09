@@ -23,7 +23,7 @@ module V1
         }
 
         let!(:enabled_embed) {
-          Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo', source_type: 1, status: 1, published: true })
+          Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo', source_type: 1, status: 1, published: true, thumbnail_url: 'http://test.embed-url.jpg' })
         }
 
         let!(:unpublished_embed) {

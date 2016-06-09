@@ -103,7 +103,8 @@ CREATE TABLE embeds (
     status integer DEFAULT 0,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    published boolean DEFAULT false
+    published boolean DEFAULT false,
+    thumbnail_url character varying
 );
 
 
@@ -218,6 +219,6 @@ CREATE INDEX index_embeds_on_status ON embeds USING btree (status);
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20160518112028'), ('20160518112054'), ('20160518114436'), ('20160518114831'), ('20160519111712'), ('20160609092915');
+INSERT INTO schema_migrations (version) VALUES ('20160518112028'), ('20160518112054'), ('20160518114436'), ('20160518114831'), ('20160519111712'), ('20160609092915'), ('20160609162421');
 
 
