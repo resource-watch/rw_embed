@@ -88,7 +88,7 @@
               {
                 "name": "type",
                 "in": "query",
-                "description": "Filter embeds on type (app, image)",
+                "description": "Filter embeds on type (app, image, source, partner)",
                 "type": "string"
               }
             ],
@@ -303,6 +303,102 @@
               }
             }
           }
+        },
+        "/sourses": {
+          "get": {
+            "description": "Returns all sourses",
+            "produces": [
+              "application/json"
+            ],
+            "tags": [
+              "Embed"
+            ],
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Filter sourses on status (pending, active, failed, disabled, all)",
+                "type": "string"
+              },
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter sourses on published status (true, false)",
+                "type": "string"
+              },
+              {
+                "name": "type",
+                "in": "query",
+                "description": "Filter sourses on type (partner)",
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Embeds obtained",
+                "schema": {
+                  "$ref": "#/definitions/Embeds"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        },
+        "/partners": {
+          "get": {
+            "description": "Returns all partners",
+            "produces": [
+              "application/json"
+            ],
+            "tags": [
+              "Embed"
+            ],
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Filter partners on status (pending, active, failed, disabled, all)",
+                "type": "string"
+              },
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter partners on published status (true, false)",
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Embeds obtained",
+                "schema": {
+                  "$ref": "#/definitions/Embeds"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
         }
       },
       "definitions": {
@@ -314,7 +410,23 @@
               "properties": {
                 "source_url": {
                   "type": "string",
-                  "description": "Source url"
+                  "description": "Source url for types application and image (0 - 1)"
+                },
+                "logo_url": {
+                  "type": "string",
+                  "description": "Source url for type source (2)"
+                },
+                "acronym": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "partner": {
+                  "type": "boolean",
+                  "description": "For type source (2)"
                 },
                 "embed_attributes": {
                   "type": "object",
@@ -380,7 +492,7 @@
             },
             "source_type": {
               "type": "string",
-              "description": "Source type (application or image)"
+              "description": "Source type (application, image or source)"
             },
             "status": {
               "type": "string",
@@ -389,6 +501,10 @@
             "published": {
               "type": "boolean",
               "description": "Published status"
+            },
+            "partner": {
+              "type": "boolean",
+              "description": "Is a partner?"
             }
           }
         },
@@ -406,11 +522,11 @@
             },
             "source_type": {
               "type": "string",
-              "description": "Source type (application, image)"
+              "description": "Source type (application, image or source)"
             },
             "source_url": {
-              "type": "string",
-              "description": "Embed url"
+              "description": "Embed url",
+              "type": "string"
             },
             "title": {
               "type": "string",
@@ -423,6 +539,28 @@
             "content": {
               "type": "string",
               "description": "Long description"
+            },
+            "source": {
+              "type": "object",
+              "description": "For type source (2)",
+              "properties": {
+                "logo_url": {
+                  "type": "string",
+                  "description": "Source url for type source (2)"
+                },
+                "acronym": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "partner": {
+                  "type": "boolean",
+                  "description": "For type source (2)"
+                }
+              }
             },
             "meta": {
               "type": "object",

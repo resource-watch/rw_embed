@@ -13,6 +13,7 @@
 #  status         :integer          default(0)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  published      :boolean          default(FALSE)
 #
 
 require 'rails_helper'
@@ -23,12 +24,12 @@ RSpec.describe Embed, type: :model do
     embeds << EmbedApp.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed app',     source_type: 0, slug: 'first-test-embed' })
     embeds << EmbedApp.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed app two', summary: 'Lorem ipsum...' })
 
-    embeds << Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo',   source_type: 1, slug: 'second-test-embed' })
+    embeds << Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo', source_type: 1, slug: 'second-test-embed' })
+    embeds << Source.create!(logo_url: 'http://test.embed-url.png', partner: true, embed_attributes: { title: 'Partner', source_type: 2 })
     embeds.each(&:reload)
   }
 
   let!(:embed_first)  { embeds[0].embed }
-  let!(:embed_second) { embeds[1].embed }
   let!(:embed_third)  { embeds[2].embed }
 
   it 'Is valid' do

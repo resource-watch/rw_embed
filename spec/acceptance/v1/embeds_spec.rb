@@ -3,25 +3,19 @@ require 'acceptance_helper'
 module V1
   describe 'Embeds', type: :request do
     context 'Create, update and delete embeds' do
-      let!(:params) {{"embed": {
-                      "source_url": "http://test.embed-url.org",
-                      "embed_attributes": { "title": "First test embed",
-                                            "source_type": 0 }
-                    }}}
-
-      let!(:update_params) {{"embed": {
-                             "source_url": "http://test.embed-url-2.org",
-                             "embed_attributes": { "title": "First test photo update",
-                                                   "slug": "updated-first-test-embed",
-                                                   "source_type": 1 }
-                           }}}
+      let(:update_params) {{"embed": {
+                            "source_url": "http://test.embed-url-2.org",
+                            "embed_attributes": { "title": "First test photo update",
+                                                  "slug": "updated-first-test-embed",
+                                                  "source_type": 1 }
+                          }}}
 
       let!(:embed) {
         EmbedApp.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed app one', source_type: 0 })
       }
 
-      let!(:embed_id)   { embed.embed.id   }
-      let!(:embed_slug) { embed.embed.slug }
+      let(:embed_id)   { embed.embed.id   }
+      let(:embed_slug) { embed.embed.slug }
 
       context 'List filters' do
         let!(:disabled_embed) {
@@ -36,11 +30,19 @@ module V1
           Photo.create!(source_url: 'http://test.embed-url.org', embed_attributes: { title: 'Embed photo unpublished', source_type: 1, status: 1, published: false })
         }
 
+        let!(:enabled_embed_source_partner) {
+          Source.create!(url: 'http://test.embed-url.org', logo_url: 'http://test.embed-url.png', acronym: 'UN', partner: true, embed_attributes: { title: 'Source partner', source_type: 2, status: 1, published: true })
+        }
+
+        let!(:enabled_embed_source) {
+          Source.create!(url: 'http://test.embed-url.org', logo_url: 'http://test.embed-url.png', acronym: 'UN', embed_attributes: { title: 'Source', source_type: 2, status: 1, published: true })
+        }
+
         it 'Show list of all embeds' do
           get '/embeds?status=all'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(4)
+          expect(json.size).to eq(6)
         end
 
         it 'Show list of all embeds of type image' do
@@ -48,6 +50,42 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
+        end
+
+        it 'Show list of all embeds of type source' do
+          get '/embeds?status=all&type=source'
+
+          expect(status).to eq(200)
+          expect(json.size).to eq(2)
+          expect(json[0]['partner']).to eq(false)
+          expect(json[1]['partner']).to eq(true)
+        end
+
+        it 'Show list of all embeds of type partner' do
+          get '/embeds?status=all&type=partner'
+
+          expect(status).to eq(200)
+          expect(json.size).to          eq(1)
+          expect(json[0]['partner']).to eq(true)
+        end
+
+        context 'Special routing for sources and partners' do
+          it 'Show list of all embeds of type source' do
+            get '/sources'
+
+            expect(status).to eq(200)
+            expect(json.size).to eq(2)
+            expect(json[0]['partner']).to eq(false)
+            expect(json[1]['partner']).to eq(true)
+          end
+
+          it 'Show list of all embeds of type partner' do
+            get '/partners'
+
+            expect(status).to eq(200)
+            expect(json.size).to          eq(1)
+            expect(json[0]['partner']).to eq(true)
+          end
         end
 
         it 'Show list of all embeds of type app using status filter all' do
@@ -75,7 +113,7 @@ module V1
           get '/embeds?status=active'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(3)
         end
 
         it 'Show list of embeds with disabled status' do
@@ -89,7 +127,7 @@ module V1
           get '/embeds?published=true'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(3)
           expect(json[0]['published']).to eq(true)
         end
 
@@ -105,7 +143,7 @@ module V1
           get '/embeds'
 
           expect(status).to eq(200)
-          expect(json.size).to eq(1)
+          expect(json.size).to eq(3)
         end
       end
 
@@ -124,12 +162,61 @@ module V1
         expect(status).to eq(200)
       end
 
-      it 'Allows to create app embed' do
-        post '/embeds', params: params
+      context 'Create depending on type' do
+        context 'For applications' do
+          let(:params) {{"embed": {
+                         "source_url": "http://test.embed-url.org",
+                         "embed_attributes": { "title": "First test app",
+                                               "source_type": 0 }
+                       }}}
 
-        expect(status).to eq(201)
-        expect(json['id']).to   be_present
-        expect(json['slug']).to eq('first-test-embed')
+          it 'Allows to create app embed' do
+            post '/embeds', params: params
+
+            expect(status).to eq(201)
+            expect(json['id']).to   be_present
+            expect(json['slug']).to eq('first-test-app')
+            expect(json['source_type']).to eq('application')
+          end
+        end
+
+        context 'For images' do
+          let(:params) {{"embed": {
+                         "source_url": "http://test.embed-url.org",
+                         "embed_attributes": { "title": "First test image",
+                                               "source_type": 1 }
+                       }}}
+
+          it 'Allows to create app embed' do
+            post '/embeds', params: params
+
+            expect(status).to eq(201)
+            expect(json['id']).to   be_present
+            expect(json['slug']).to eq('first-test-image')
+            expect(json['source_type']).to eq('image')
+          end
+        end
+
+        context 'For sources' do
+          let!(:partner_params) {{"embed": {
+                                  "logo_url": "http://test.embed-url.org",
+                                  "partner": true,
+                                  "embed_attributes": { "title": "Second partner",
+                                                        "source_type": '2'.to_i,
+                                                        "status": '1'.to_i,
+                                                        "published": true
+                                  }
+                                }}}
+
+          it 'Allows to create partner embed' do
+            post '/embeds', params: partner_params
+
+            expect(status).to eq(201)
+            expect(json['id']).to   be_present
+            expect(json['slug']).to eq('second-partner')
+            expect(json['source_type']).to eq('source')
+          end
+        end
       end
 
       it 'Allows to update embed' do

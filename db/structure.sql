@@ -129,6 +129,21 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: sources; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE sources (
+    id uuid DEFAULT uuid_generate_v4() NOT NULL,
+    acronym character varying,
+    url character varying,
+    logo_url character varying,
+    partner boolean DEFAULT false,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -169,6 +184,14 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
+-- Name: sources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sources
+    ADD CONSTRAINT sources_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_embeds_on_source_and_embedable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -195,6 +218,6 @@ CREATE INDEX index_embeds_on_status ON embeds USING btree (status);
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20160518112028'), ('20160518112054'), ('20160518114436'), ('20160518114831'), ('20160519111712');
+INSERT INTO schema_migrations (version) VALUES ('20160518112028'), ('20160518112054'), ('20160518114436'), ('20160518114831'), ('20160519111712'), ('20160609092915');
 
 
