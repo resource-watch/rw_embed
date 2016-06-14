@@ -12,6 +12,24 @@
         }]
       },
       {
+        "url": "/sources",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "https://rw-embed.herokuapp.com",
+            "path": "/sources"
+        }]
+      },
+      {
+        "url": "/partners",
+        "method": "GET",
+        "endpoints": [{
+            "method": "GET",
+            "baseUrl": "https://rw-embed.herokuapp.com",
+            "path": "/partners"
+        }]
+      },
+      {
         "url": "/embeds/:id",
         "method": "GET",
         "endpoints": [{
@@ -63,6 +81,104 @@
         "application/json"
       ],
       "paths": {
+        "/embeds": {
+          "get": {
+            "description": "Returns all embeds",
+            "produces": [
+              "application/json"
+            ],
+            "tags": [
+              "Embed"
+            ],
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Filter embeds on status (pending, active, failed, disabled, all)",
+                "type": "string"
+              },
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter embeds on published status (true, false)",
+                "type": "string"
+              },
+              {
+                "name": "type",
+                "in": "query",
+                "description": "Filter embeds on type (app, image, source, partner)",
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Embeds obtained",
+                "schema": {
+                  "$ref": "#/definitions/Embeds"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          },
+          "post": {
+            "summary": "Create application or image embed (depends on source_type - 0 for application or 1 for image)",
+            "description": "Create embed",
+            "produces": [
+              "application/json"
+            ],
+            "tags": [
+              "Embed"
+            ],
+            "parameters": [
+              {
+                "name": "embed",
+                "in": "body",
+                "description": "Embed to save",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/EmbedCreate"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "The object created",
+                "schema": {
+                  "$ref": "#/definitions/Embed"
+                }
+              },
+              "400": {
+                "description": "Validate error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "500": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              },
+              "default": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        },
         "/embeds/{id}": {
           "get": {
             "description": "Returns embed based on a single UUID or slud, if the geostore not exist return 404",
@@ -206,14 +322,34 @@
             }
           }
         },
-        "/embeds": {
+        "/sourses": {
           "get": {
-            "description": "Returns all embeds",
+            "description": "Returns all sourses",
             "produces": [
               "application/json"
             ],
             "tags": [
               "Embed"
+            ],
+            "parameters": [
+              {
+                "name": "status",
+                "in": "query",
+                "description": "Filter sourses on status (pending, active, failed, disabled, all)",
+                "type": "string"
+              },
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter sourses on published status (true, false)",
+                "type": "string"
+              },
+              {
+                "name": "type",
+                "in": "query",
+                "description": "Filter sourses on type (partner)",
+                "type": "string"
+              }
             ],
             "responses": {
               "200": {
@@ -235,10 +371,11 @@
                 }
               }
             }
-          },
-          "post": {
-            "summary": "Create application or image embed (depends on source_type - 0 for application or 1 for image)",
-            "description": "Create embed",
+          }
+        },
+        "/partners": {
+          "get": {
+            "description": "Returns all partners",
             "produces": [
               "application/json"
             ],
@@ -247,26 +384,23 @@
             ],
             "parameters": [
               {
-                "name": "embed",
-                "in": "body",
-                "description": "Embed to save",
-                "required": true,
-                "schema": {
-                  "$ref": "#/definitions/EmbedCreate"
-                }
+                "name": "status",
+                "in": "query",
+                "description": "Filter partners on status (pending, active, failed, disabled, all)",
+                "type": "string"
+              },
+              {
+                "name": "published",
+                "in": "query",
+                "description": "Filter partners on published status (true, false)",
+                "type": "string"
               }
             ],
             "responses": {
               "200": {
-                "description": "The object created",
+                "description": "Embeds obtained",
                 "schema": {
-                  "$ref": "#/definitions/Embed"
-                }
-              },
-              "400": {
-                "description": "Validate error",
-                "schema": {
-                  "$ref": "#/definitions/Error"
+                  "$ref": "#/definitions/Embeds"
                 }
               },
               "500": {
@@ -276,7 +410,7 @@
                 }
               },
               "default": {
-                "description": "Unexpected error",
+                "description": "unexpected error",
                 "schema": {
                   "$ref": "#/definitions/Error"
                 }
@@ -294,7 +428,23 @@
               "properties": {
                 "source_url": {
                   "type": "string",
-                  "description": "Source url"
+                  "description": "Source url for types application and image (0 - 1)"
+                },
+                "logo_url": {
+                  "type": "string",
+                  "description": "Source url for type source (2)"
+                },
+                "acronym": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "partner": {
+                  "type": "boolean",
+                  "description": "For type source (2)"
                 },
                 "embed_attributes": {
                   "type": "object",
@@ -307,7 +457,11 @@
                     "status": {
                       "type": "integer",
                       "format": "int32",
-                      "description": "Id of the status (0 - panding, 1 - saved, 2 - failed, 3 - deleted)"
+                      "description": "Id of the status (0 - panding, 1 - saved, 2 - failed, 3 - disabled)"
+                    },
+                    "published": {
+                      "type": "boolean",
+                      "description": "Published status (true - false)"
                     },
                     "slug": {
                       "type": "string",
@@ -356,11 +510,19 @@
             },
             "source_type": {
               "type": "string",
-              "description": "Source type (application or image)"
+              "description": "Source type (application, image or source)"
             },
             "status": {
               "type": "string",
               "description": "status"
+            },
+            "published": {
+              "type": "boolean",
+              "description": "Published status"
+            },
+            "partner": {
+              "type": "boolean",
+              "description": "Is a partner?"
             }
           }
         },
@@ -378,11 +540,11 @@
             },
             "source_type": {
               "type": "string",
-              "description": "Source type (application, image)"
+              "description": "Source type (application, image or source)"
             },
             "source_url": {
-              "type": "string",
-              "description": "Embed url"
+              "description": "Embed url",
+              "type": "string"
             },
             "title": {
               "type": "string",
@@ -396,12 +558,38 @@
               "type": "string",
               "description": "Long description"
             },
+            "source": {
+              "type": "object",
+              "description": "For type source (2)",
+              "properties": {
+                "logo_url": {
+                  "type": "string",
+                  "description": "Source url for type source (2)"
+                },
+                "acronym": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "For type source (2)"
+                },
+                "partner": {
+                  "type": "boolean",
+                  "description": "For type source (2)"
+                }
+              }
+            },
             "meta": {
               "type": "object",
               "properties": {
                 "status": {
                   "type": "string",
                   "description": "Status"
+                },
+                "published": {
+                  "type": "boolean",
+                  "description": "Published status"
                 },
                 "updated_at": {
                   "type": "string",
