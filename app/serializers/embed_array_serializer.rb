@@ -1,5 +1,5 @@
 class EmbedArraySerializer < ActiveModel::Serializer
-  attributes :id, :slug, :title, :source_type, :status, :published
+  attributes :id, :slug, :title, :source_type, :status, :published, :partner
 
   def source_type
     object.try(:source_txt)
@@ -7,5 +7,9 @@ class EmbedArraySerializer < ActiveModel::Serializer
 
   def status
     object.try(:status_txt)
+  end
+
+  def partner
+    object.embedable.try(:partner)
   end
 end

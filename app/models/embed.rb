@@ -13,10 +13,11 @@
 #  status         :integer          default(0)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  published      :boolean          default(FALSE)
 #
 
 class Embed < ApplicationRecord
-  SOURCE = %w(application image).freeze
+  SOURCE = %w(application image source).freeze
   STATUS = %w(pending saved failed deleted).freeze
 
   belongs_to :embedable, polymorphic: true
@@ -41,9 +42,11 @@ class Embed < ApplicationRecord
   scope :filter_published,   -> { where(published: true)   }
   scope :filter_unpublished, -> { where(published: false)  }
 
-  scope :filter_apps,    -> { where(embedable_type: 'EmbedApp') }
-  scope :filter_images,  -> { where(embedable_type: 'Photo')    }
-  scope :filter_actives, -> { filter_saved.filter_published     }
+  scope :filter_apps,     -> { where(embedable_type: 'EmbedApp')               }
+  scope :filter_images,   -> { where(embedable_type: 'Photo')                  }
+  scope :filter_sources,  -> { where(embedable_type: 'Source')                 }
+  scope :filter_partners, -> { Source.where(partner: true).map { |s| s.embed } }
+  scope :filter_actives,  -> { filter_saved.filter_published                   }
 
   def source_txt
     SOURCE[source_type - 0]
@@ -85,14 +88,16 @@ class Embed < ApplicationRecord
 
       embeds = embeds.filter_images      if embed_type.present? && embed_type.include?('image')
       embeds = embeds.filter_apps        if embed_type.present? && embed_type.include?('app')
+      embeds = embeds.filter_sources     if embed_type.present? && embed_type.include?('source')
+      embeds = embeds.filter_partners    if embed_type.present? && embed_type.include?('partner')
       embeds
     end
 
     def build_embed(options)
-      embed_type = options['embed_attributes']['source_type'] if options['embed_attributes']['source_type'].present?
+      embed_type = options['embed_attributes']['source_type'].to_i if options['embed_attributes']['source_type'].present?
       case embed_type
-      when 1
-        Photo.new(options)
+      when 2 then Source.new(options)
+      when 1 then Photo.new(options)
       else
         EmbedApp.new(options)
       end
