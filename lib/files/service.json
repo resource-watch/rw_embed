@@ -16,7 +16,7 @@
         "method": "GET",
         "endpoints": [{
             "method": "GET",
-            "baseUrl": "https://rw-embed.herokuapp.com",
+            "baseUrl": "http://localhost:3015",
             "path": "/sources"
         }]
       },
@@ -25,7 +25,7 @@
         "method": "GET",
         "endpoints": [{
             "method": "GET",
-            "baseUrl": "https://rw-embed.herokuapp.com",
+            "baseUrl": "http://localhost:3015",
             "path": "/partners"
         }]
       },
