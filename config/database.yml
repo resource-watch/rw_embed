@@ -55,6 +55,6 @@ test:
 
 production:
   <<: *default
-  database: rw_dataset_production
+  database: rw_embed_production
   password: <%= ENV['POSTGRES_PASS'] %>
 
