@@ -1,0 +1,19 @@
+web:
+  build: .
+  command: develop
+  volumes:
+    - .:/rw_embed
+  ports:
+    - '3015:3015'
+  links:
+    - postgres
+    - redis
+  env_file: dev.env
+
+postgres:
+  image: postgres
+  container_name: postgres_rw_embed
+
+redis:
+  image: redis
+  container_name: redis_rw_embed
