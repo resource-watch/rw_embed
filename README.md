@@ -53,4 +53,3 @@ To run application:
 ### BEFORE CREATING A PULL REQUEST
 
   Please check all of [these points](https://github.com/resource-watch/rw_embed/blob/master/CONTRIBUTING.md).
-
