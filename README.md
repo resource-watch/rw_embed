@@ -1,6 +1,6 @@
 # Resource Watch Embed Service
 
-[![Build Status](https://travis-ci.org/resource-watch/rw_embed.svg?branch=develop)](https://travis-ci.org/resource-watch/rw_embed) [![Code Climate](https://codeclimate.com/github/resource-watch/rw_embed/badges/gpa.svg)](https://codeclimate.com/github/resource-watch/rw_embed)
+[![Build Status](https://travis-ci.org/resource-watch/rw_embed.svg?branch=staging)](https://travis-ci.org/resource-watch/rw_embed) [![Code Climate](https://codeclimate.com/github/resource-watch/rw_embed/badges/gpa.svg)](https://codeclimate.com/github/resource-watch/rw_embed)
 
 TODO: Write a project description
 
@@ -49,4 +49,3 @@ To run application:
 ### BEFORE CREATING A PULL REQUEST
 
   Please check all of [these points](https://github.com/resource-watch/rw_embed/blob/master/CONTRIBUTING.md).
-
