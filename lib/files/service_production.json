@@ -1,6 +1,7 @@
 {
     "id": "rw_embed_v1",
     "name": "RW Embed v1",
+    "tags": ["rw"],
     "urls": [
       {
         "url": "/embeds",
