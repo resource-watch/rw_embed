@@ -1,4 +1,4 @@
-class EmbedArraySerializer < ActiveModel::Serializer
+class EmbedArraySerializer < ApplicationSerializer
   attributes :id, :slug, :title, :source_type, :status, :published, :partner
 
   def source_type
