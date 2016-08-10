@@ -16,8 +16,8 @@
 #  published      :boolean          default(FALSE)
 #
 
-class EmbedSerializer < ActiveModel::Serializer
-  attributes :id, :slug, :source_type, :source_url, :thumbnail_url, :title, :summary, :content, :source, :meta
+class EmbedSerializer < ApplicationSerializer
+  attributes :id, :slug, :source_type, :source_url, :thumbnail_url, :title, :summary, :content, :source
 
   def source_type
     object.try(:source_txt)
@@ -33,15 +33,6 @@ class EmbedSerializer < ActiveModel::Serializer
     data['url']      = object.embedable.try(:url)
     data['logo_url'] = object.embedable.try(:logo_url)
     data['partner']  = object.embedable.try(:partner)
-    data
-  end
-
-  def meta
-    data = {}
-    data['status']     = object.try(:status_txt)
-    data['published']  = object.try(:published)
-    data['updated_at'] = object.try(:updated_at)
-    data['created_at'] = object.try(:created_at)
     data
   end
 end

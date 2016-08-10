@@ -9,7 +9,9 @@ module V1
     end
 
     def show
-      render json: @embed, serializer: EmbedSerializer, root: false
+      render json: @embed, serializer: EmbedSerializer, root: false, meta: { status: @embed.try(:status_txt),
+                                                                             updated_at: @embed.try(:updated_at),
+                                                                             created_at: @embed.try(:created_at) }
     end
 
     def update
