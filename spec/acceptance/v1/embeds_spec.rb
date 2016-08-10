@@ -57,8 +57,8 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
-          expect(json[0]['partner']).to eq(false)
-          expect(json[1]['partner']).to eq(true)
+          expect(json[0]['attributes']['partner']).to eq(false)
+          expect(json[1]['attributes']['partner']).to eq(true)
         end
 
         it 'Show list of all embeds of type partner' do
@@ -66,7 +66,7 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to          eq(1)
-          expect(json[0]['partner']).to eq(true)
+          expect(json[0]['attributes']['partner']).to eq(true)
         end
 
         context 'Special routing for sources and partners' do
@@ -75,8 +75,8 @@ module V1
 
             expect(status).to eq(200)
             expect(json.size).to eq(2)
-            expect(json[0]['partner']).to eq(false)
-            expect(json[1]['partner']).to eq(true)
+            expect(json[0]['attributes']['partner']).to eq(false)
+            expect(json[1]['attributes']['partner']).to eq(true)
           end
 
           it 'Show list of all embeds of type partner' do
@@ -84,7 +84,7 @@ module V1
 
             expect(status).to eq(200)
             expect(json.size).to          eq(1)
-            expect(json[0]['partner']).to eq(true)
+            expect(json[0]['attributes']['partner']).to eq(true)
           end
         end
 
@@ -128,7 +128,7 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
-          expect(json[0]['published']).to eq(true)
+          expect(json[0]['attributes']['published']).to eq(true)
         end
 
         it 'Show list of embeds with published status false' do
@@ -136,7 +136,7 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
-          expect(json[0]['published']).to eq(false)
+          expect(json[0]['attributes']['published']).to eq(false)
         end
 
         it 'Show list of embeds' do
@@ -151,9 +151,9 @@ module V1
         get "/embeds/#{embed_slug}"
 
         expect(status).to eq(200)
-        expect(json['slug']).to            eq('embed-app-one')
-        expect(json['source_type']).to     eq('application')
-        expect(json['meta']['status']).to  eq('pending')
+        expect(json['attributes']['slug']).to       eq('embed-app-one')
+        expect(json['attributes']['sourceType']).to eq('application')
+        expect(json_main['meta']['status']).to      eq('pending')
       end
 
       it 'Show embed by id' do
@@ -174,9 +174,9 @@ module V1
             post '/embeds', params: params
 
             expect(status).to eq(201)
-            expect(json['id']).to   be_present
-            expect(json['slug']).to eq('first-test-app')
-            expect(json['source_type']).to eq('application')
+            expect(json['id']).to                       be_present
+            expect(json['attributes']['slug']).to       eq('first-test-app')
+            expect(json['attributes']['sourceType']).to eq('application')
           end
         end
 
@@ -191,9 +191,9 @@ module V1
             post '/embeds', params: params
 
             expect(status).to eq(201)
-            expect(json['id']).to   be_present
-            expect(json['slug']).to eq('first-test-image')
-            expect(json['source_type']).to eq('image')
+            expect(json['id']).to                       be_present
+            expect(json['attributes']['slug']).to       eq('first-test-image')
+            expect(json['attributes']['sourceType']).to eq('image')
           end
         end
 
@@ -212,9 +212,9 @@ module V1
             post '/embeds', params: partner_params
 
             expect(status).to eq(201)
-            expect(json['id']).to   be_present
-            expect(json['slug']).to eq('second-partner')
-            expect(json['source_type']).to eq('source')
+            expect(json['id']).to                       be_present
+            expect(json['attributes']['slug']).to       eq('second-partner')
+            expect(json['attributes']['sourceType']).to eq('source')
           end
         end
       end
@@ -223,17 +223,17 @@ module V1
         put "/embeds/#{embed_slug}", params: update_params
 
         expect(status).to eq(200)
-        expect(json['id']).to           be_present
-        expect(json['title']).to        eq('First test photo update')
-        expect(json['slug']).to         eq('updated-first-test-embed')
-        expect(json['source_type']).to  eq('image')
+        expect(json['id']).to                       be_present
+        expect(json['attributes']['title']).to      eq('First test photo update')
+        expect(json['attributes']['slug']).to       eq('updated-first-test-embed')
+        expect(json['attributes']['sourceType']).to eq('image')
       end
 
       it 'Allows to delete embed by id' do
         delete "/embeds/#{embed_id}"
 
         expect(status).to eq(200)
-        expect(json['message']).to eq('Embed deleted')
+        expect(json_main['message']).to eq('Embed deleted')
         expect(Embed.where(id: embed_id)).to be_empty
       end
 
@@ -241,7 +241,7 @@ module V1
         delete "/embeds/#{embed_slug}"
 
         expect(status).to eq(200)
-        expect(json['message']).to eq('Embed deleted')
+        expect(json_main['message']).to eq('Embed deleted')
         expect(Embed.where(slug: embed_slug)).to be_empty
       end
     end
