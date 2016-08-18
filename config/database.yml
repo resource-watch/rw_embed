@@ -55,10 +55,10 @@ test:
 
 staging:
   <<: *default
-  database: rw_embed_production
+  database: rw_embed
   password: <%= ENV['POSTGRES_PASS'] %>
 
 production:
   <<: *default
-  database: rw_embed
+  database: rw_embed_production
   password: <%= ENV['POSTGRES_PASS'] %>
