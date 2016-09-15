@@ -1,6 +1,5 @@
 module V1
   class EmbedsController < ApplicationController
-    before_action :basic_auth, only: [:update, :create, :destroy]
     before_action :set_embed,  only: [:show, :update, :destroy]
 
     def index
