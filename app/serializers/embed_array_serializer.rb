@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class EmbedArraySerializer < ApplicationSerializer
   attributes :id, :slug, :title, :source_type, :status, :published, :partner
 
