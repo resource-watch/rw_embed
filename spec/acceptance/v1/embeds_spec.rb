@@ -57,16 +57,16 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
-          expect(json[0]['attributes']['partner']).to eq(false)
-          expect(json[1]['attributes']['partner']).to eq(true)
+          expect(json[0]['attributes']['source']['partner']).to eq(false)
+          expect(json[1]['attributes']['source']['partner']).to eq(true)
         end
 
         it 'Show list of all embeds of type partner' do
           get '/embeds?status=all&type=partner'
 
           expect(status).to eq(200)
-          expect(json.size).to          eq(1)
-          expect(json[0]['attributes']['partner']).to eq(true)
+          expect(json.size).to eq(1)
+          expect(json[0]['attributes']['source']['partner']).to eq(true)
         end
 
         context 'Special routing for sources and partners' do
@@ -75,16 +75,16 @@ module V1
 
             expect(status).to eq(200)
             expect(json.size).to eq(2)
-            expect(json[0]['attributes']['partner']).to eq(false)
-            expect(json[1]['attributes']['partner']).to eq(true)
+            expect(json[0]['attributes']['source']['partner']).to eq(false)
+            expect(json[1]['attributes']['source']['partner']).to eq(true)
           end
 
           it 'Show list of all embeds of type partner' do
             get '/partners'
 
             expect(status).to eq(200)
-            expect(json.size).to          eq(1)
-            expect(json[0]['attributes']['partner']).to eq(true)
+            expect(json.size).to eq(1)
+            expect(json[0]['attributes']['source']['partner']).to eq(true)
           end
         end
 
@@ -128,7 +128,6 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
-          expect(json[0]['attributes']['published']).to eq(true)
         end
 
         it 'Show list of embeds with published status false' do
@@ -136,7 +135,6 @@ module V1
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
-          expect(json[0]['attributes']['published']).to eq(false)
         end
 
         it 'Show list of embeds' do
@@ -175,8 +173,8 @@ module V1
 
             expect(status).to eq(201)
             expect(json['id']).to                       be_present
-            expect(json['attributes']['slug']).to       eq('first-test-app')
-            expect(json['attributes']['sourceType']).to eq('application')
+            expect(json_attr['slug']).to       eq('first-test-app')
+            expect(json_attr['sourceType']).to eq('application')
           end
         end
 
@@ -192,8 +190,8 @@ module V1
 
             expect(status).to eq(201)
             expect(json['id']).to                       be_present
-            expect(json['attributes']['slug']).to       eq('first-test-image')
-            expect(json['attributes']['sourceType']).to eq('image')
+            expect(json_attr['slug']).to       eq('first-test-image')
+            expect(json_attr['sourceType']).to eq('image')
           end
         end
 
@@ -213,8 +211,8 @@ module V1
 
             expect(status).to eq(201)
             expect(json['id']).to                       be_present
-            expect(json['attributes']['slug']).to       eq('second-partner')
-            expect(json['attributes']['sourceType']).to eq('source')
+            expect(json_attr['slug']).to       eq('second-partner')
+            expect(json_attr['sourceType']).to eq('source')
           end
         end
       end
@@ -224,9 +222,9 @@ module V1
 
         expect(status).to eq(200)
         expect(json['id']).to                       be_present
-        expect(json['attributes']['title']).to      eq('First test photo update')
-        expect(json['attributes']['slug']).to       eq('updated-first-test-embed')
-        expect(json['attributes']['sourceType']).to eq('image')
+        expect(json_attr['title']).to      eq('First test photo update')
+        expect(json_attr['slug']).to       eq('updated-first-test-embed')
+        expect(json_attr['sourceType']).to eq('image')
       end
 
       it 'Allows to delete embed by id' do

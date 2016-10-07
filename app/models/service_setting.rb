@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ServiceSetting < ApplicationRecord
   class << self
     def save_gateway_settings(options=nil)
