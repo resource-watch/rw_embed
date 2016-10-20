@@ -61,6 +61,16 @@
       },
       {
         "url": "/embed/:id",
+        "method": "PATCH",
+        "authenticated": true,
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://localhost:3015",
+            "path": "/embed/:id"
+        }]
+      },
+      {
+        "url": "/embed/:id",
         "method": "DELETE",
         "authenticated": true,
         "endpoints": [{

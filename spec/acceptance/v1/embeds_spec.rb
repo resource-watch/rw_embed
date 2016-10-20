@@ -172,7 +172,7 @@ module V1
             post '/embed', params: params
 
             expect(status).to eq(201)
-            expect(json['id']).to                       be_present
+            expect(json['id']).to              be_present
             expect(json_attr['slug']).to       eq('first-test-app')
             expect(json_attr['sourceType']).to eq('application')
           end
@@ -189,7 +189,7 @@ module V1
             post '/embed', params: params
 
             expect(status).to eq(201)
-            expect(json['id']).to                       be_present
+            expect(json['id']).to              be_present
             expect(json_attr['slug']).to       eq('first-test-image')
             expect(json_attr['sourceType']).to eq('image')
           end
@@ -210,18 +210,28 @@ module V1
             post '/embed', params: partner_params
 
             expect(status).to eq(201)
-            expect(json['id']).to                       be_present
+            expect(json['id']).to              be_present
             expect(json_attr['slug']).to       eq('second-partner')
             expect(json_attr['sourceType']).to eq('source')
           end
         end
       end
 
-      it 'Allows to update embed' do
+      it 'Allows to update embed via put' do
         put "/embed/#{embed_slug}", params: update_params
 
         expect(status).to eq(200)
-        expect(json['id']).to                       be_present
+        expect(json['id']).to              be_present
+        expect(json_attr['title']).to      eq('First test photo update')
+        expect(json_attr['slug']).to       eq('updated-first-test-embed')
+        expect(json_attr['sourceType']).to eq('image')
+      end
+
+      it 'Allows to update embed via patch' do
+        patch "/embed/#{embed_slug}", params: update_params
+
+        expect(status).to eq(200)
+        expect(json['id']).to              be_present
         expect(json_attr['title']).to      eq('First test photo update')
         expect(json_attr['slug']).to       eq('updated-first-test-embed')
         expect(json_attr['sourceType']).to eq('image')
