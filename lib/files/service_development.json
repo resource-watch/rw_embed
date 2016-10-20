@@ -3,12 +3,12 @@
     "name": "RW Embed v1",
     "urls": [
       {
-        "url": "/embeds",
+        "url": "/embed",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://192.168.99.100:3015",
-            "path": "/embeds"
+            "path": "/embed"
         }]
       },
       {
@@ -30,39 +30,48 @@
         }]
       },
       {
-        "url": "/embeds/:id",
+        "url": "/embed/:id",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://192.168.99.100:3015",
-            "path": "/embeds/:id"
+            "path": "/embed/:id"
         }]
       },
       {
-        "url": "/embeds",
+        "url": "/embed",
         "method": "POST",
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://192.168.99.100:3015",
-            "path": "/embeds"
+            "path": "/embed"
         }]
       },
       {
-        "url": "/embeds/:id",
+        "url": "/embed/:id",
         "method": "PUT",
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://192.168.99.100:3015",
-            "path": "/embeds/:id"
+            "path": "/embed/:id"
         }]
       },
       {
-        "url": "/embeds/:id",
+        "url": "/embed/:id",
+        "method": "PATCH",
+        "endpoints": [{
+            "method": "PATCH",
+            "baseUrl": "http://192.168.99.100:3015",
+            "path": "/embed/:id"
+        }]
+      },
+      {
+        "url": "/embed/:id",
         "method": "DELETE",
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://192.168.99.100:3015",
-            "path": "/embeds/:id"
+            "path": "/embed/:id"
         }]
       }
     ],
@@ -81,7 +90,7 @@
         "application/json"
       ],
       "paths": {
-        "/embeds": {
+        "/embed": {
           "get": {
             "description": "Returns all embeds",
             "produces": [
@@ -179,7 +188,7 @@
             }
           }
         },
-        "/embeds/{id}": {
+        "/embed/{id}": {
           "get": {
             "description": "Returns embed based on a single UUID or slud, if the geostore not exist return 404",
             "produces": [

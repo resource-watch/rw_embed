@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
   scope module: :v1, constraints: APIVersion.new(version: 1, current: true) do
-    resources :embeds
+    resources :embeds, path: 'embed'
 
     # For embeds of type Source and partner boolean
     get '/:type(s)' , to: 'embeds#index', constraints: { type: 'source'  }
