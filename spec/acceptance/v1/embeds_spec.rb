@@ -39,21 +39,21 @@ module V1
         }
 
         it 'Show list of all embeds' do
-          get '/embeds?status=all'
+          get '/embed?status=all'
 
           expect(status).to eq(200)
           expect(json.size).to eq(6)
         end
 
         it 'Show list of all embeds of type image' do
-          get '/embeds?status=all&type=image'
+          get '/embed?status=all&type=image'
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
         end
 
         it 'Show list of all embeds of type source' do
-          get '/embeds?status=all&type=source'
+          get '/embed?status=all&type=source'
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
@@ -62,7 +62,7 @@ module V1
         end
 
         it 'Show list of all embeds of type partner' do
-          get '/embeds?status=all&type=partner'
+          get '/embed?status=all&type=partner'
 
           expect(status).to eq(200)
           expect(json.size).to eq(1)
@@ -89,56 +89,56 @@ module V1
         end
 
         it 'Show list of all embeds of type app using status filter all' do
-          get '/embeds?status=all&type=app'
+          get '/embed?status=all&type=app'
 
           expect(status).to eq(200)
           expect(json.size).to eq(2)
         end
 
         it 'Show list of all embeds of type image' do
-          get '/embeds?type=image'
+          get '/embed?type=image'
 
           expect(status).to eq(200)
           expect(json.size).to eq(1)
         end
 
         it 'Show list of embeds with pending status' do
-          get '/embeds?status=pending'
+          get '/embed?status=pending'
 
           expect(status).to eq(200)
           expect(json.size).to eq(1)
         end
 
         it 'Show list of embeds with active status' do
-          get '/embeds?status=active'
+          get '/embed?status=active'
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
         end
 
         it 'Show list of embeds with disabled status' do
-          get '/embeds?status=disabled'
+          get '/embed?status=disabled'
 
           expect(status).to eq(200)
           expect(json.size).to eq(1)
         end
 
         it 'Show list of embeds with published status true' do
-          get '/embeds?published=true'
+          get '/embed?published=true'
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
         end
 
         it 'Show list of embeds with published status false' do
-          get '/embeds?published=false'
+          get '/embed?published=false'
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
         end
 
         it 'Show list of embeds' do
-          get '/embeds'
+          get '/embed'
 
           expect(status).to eq(200)
           expect(json.size).to eq(3)
@@ -146,7 +146,7 @@ module V1
       end
 
       it 'Show embed by slug' do
-        get "/embeds/#{embed_slug}"
+        get "/embed/#{embed_slug}"
 
         expect(status).to eq(200)
         expect(json['attributes']['slug']).to       eq('embed-app-one')
@@ -155,7 +155,7 @@ module V1
       end
 
       it 'Show embed by id' do
-        get "/embeds/#{embed_id}"
+        get "/embed/#{embed_id}"
 
         expect(status).to eq(200)
       end
@@ -169,7 +169,7 @@ module V1
                        }}}
 
           it 'Allows to create app embed' do
-            post '/embeds', params: params
+            post '/embed', params: params
 
             expect(status).to eq(201)
             expect(json['id']).to                       be_present
@@ -186,7 +186,7 @@ module V1
                        }}}
 
           it 'Allows to create app embed' do
-            post '/embeds', params: params
+            post '/embed', params: params
 
             expect(status).to eq(201)
             expect(json['id']).to                       be_present
@@ -207,7 +207,7 @@ module V1
                                 }}}
 
           it 'Allows to create partner embed' do
-            post '/embeds', params: partner_params
+            post '/embed', params: partner_params
 
             expect(status).to eq(201)
             expect(json['id']).to                       be_present
@@ -218,7 +218,7 @@ module V1
       end
 
       it 'Allows to update embed' do
-        put "/embeds/#{embed_slug}", params: update_params
+        put "/embed/#{embed_slug}", params: update_params
 
         expect(status).to eq(200)
         expect(json['id']).to                       be_present
@@ -228,7 +228,7 @@ module V1
       end
 
       it 'Allows to delete embed by id' do
-        delete "/embeds/#{embed_id}"
+        delete "/embed/#{embed_id}"
 
         expect(status).to eq(200)
         expect(json_main['message']).to eq('Embed deleted')
@@ -236,7 +236,7 @@ module V1
       end
 
       it 'Allows to delete embed by slug' do
-        delete "/embeds/#{embed_slug}"
+        delete "/embed/#{embed_slug}"
 
         expect(status).to eq(200)
         expect(json_main['message']).to eq('Embed deleted')

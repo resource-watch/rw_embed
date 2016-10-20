@@ -4,12 +4,12 @@
     "tags": ["rw"],
     "urls": [
       {
-        "url": "/embeds",
+        "url": "/embed",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://localhost:3015",
-            "path": "/embeds"
+            "path": "/embed"
         }]
       },
       {
@@ -31,39 +31,39 @@
         }]
       },
       {
-        "url": "/embeds/:id",
+        "url": "/embed/:id",
         "method": "GET",
         "endpoints": [{
             "method": "GET",
             "baseUrl": "http://localhost:3015",
-            "path": "/embeds/:id"
+            "path": "/embed/:id"
         }]
       },
       {
-        "url": "/embeds",
+        "url": "/embed",
         "method": "POST",
         "endpoints": [{
             "method": "POST",
             "baseUrl": "http://localhost:3015",
-            "path": "/embeds"
+            "path": "/embed"
         }]
       },
       {
-        "url": "/embeds/:id",
+        "url": "/embed/:id",
         "method": "PUT",
         "endpoints": [{
             "method": "PUT",
             "baseUrl": "http://localhost:3015",
-            "path": "/embeds/:id"
+            "path": "/embed/:id"
         }]
       },
       {
-        "url": "/embeds/:id",
+        "url": "/embed/:id",
         "method": "DELETE",
         "endpoints": [{
             "method": "DELETE",
             "baseUrl": "http://localhost:3015",
-            "path": "/embeds/:id"
+            "path": "/embed/:id"
         }]
       }
     ],
@@ -82,7 +82,7 @@
         "application/json"
       ],
       "paths": {
-        "/embeds": {
+        "/embed": {
           "get": {
             "description": "Returns all embeds",
             "produces": [
@@ -180,7 +180,7 @@
             }
           }
         },
-        "/embeds/{id}": {
+        "/embed/{id}": {
           "get": {
             "description": "Returns embed based on a single UUID or slud, if the geostore not exist return 404",
             "produces": [
