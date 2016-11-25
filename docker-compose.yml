@@ -12,7 +12,7 @@ prod:
   log_driver: "syslog"
   log_opt:
     syslog-address: ${SYSLOG_ADDRESS}
-    tag: rw_dataset${STAGING}
+    tag: rw_embed${STAGING}
 
   links:
     - redis
