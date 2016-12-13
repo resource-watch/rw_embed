@@ -12,7 +12,7 @@ produces:
   - application/json
 
 paths:
-  /embeds:
+  /embed:
     get:
       description: Returns all embeds
       produces:
@@ -77,7 +77,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /embeds/{id}:
+  /embed/{id}:
     get:
       description: Returns embed based on a single UUID or slud, if the geostore not exist return 404
       produces:

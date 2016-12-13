@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: embeds
@@ -63,7 +64,7 @@ class Embed < ApplicationRecord
   class << self
     def find_by_id_or_slug(param)
       embed_id = where(slug: param).or(where(id: param)).pluck(:id).min
-      find(embed_id) rescue nil
+      includes(:embedable).find(embed_id) rescue nil
     end
 
     def fetch_all(options)
@@ -72,6 +73,7 @@ class Embed < ApplicationRecord
       published  = options['published'] if options['published'].present?
 
       embeds = recent
+      embeds = embeds.includes(:embedable) unless embed_type.present? && embed_type.include?('partner')
 
       embeds = case status
                when 'pending'  then embeds.filter_pending

@@ -1,14 +1,16 @@
+# frozen_string_literal: true
 module V1
   class EmbedsController < ApplicationController
     before_action :set_embed,  only: [:show, :update, :destroy]
 
     def index
       @embeds = Embed.fetch_all(embed_type_filter)
-      render json: @embeds, each_serializer: EmbedArraySerializer, root: false
+      render json: @embeds, each_serializer: EmbedSerializer, root: false
     end
 
     def show
       render json: @embed, serializer: EmbedSerializer, root: false, meta: { status: @embed.try(:status_txt),
+                                                                             published: @embed.try(:published),
                                                                              updated_at: @embed.try(:updated_at),
                                                                              created_at: @embed.try(:created_at) }
     end
